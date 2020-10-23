@@ -32,3 +32,20 @@ class Database:
             for tag in q.get("tags", []):
                 tags.add(tag)
         return list(tags)
+
+    def search_questions(self, question_keyword: str, tags: list) -> list:
+        Question = Query()
+        all_res = self.question_db.search(Question.tags.any(tags))
+        if question_keyword:
+            all_res = [
+                x
+                for x in all_res 
+                if question_keyword in x["question_body"]
+            ]
+        return all_res
+
+    def update_questions(self, questions: list):
+        for q in questions:
+            Question = Query()
+            self.question_db.remove(Question.id == q["id"])
+            self.question_db.insert(q)

@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h3>Question</h3>
+
+<form id="questionEditForm" action="">
+
+<label for="question_keyword">Any text appearing in question: </label>
+<input type="text" id="question_keyword" name="question_keyword">
+<br><br>
+
+<div>
+    {% for tag in tags %}
+
+    <label class="container">{{tag}}
+        <input type="checkbox" name="tags" value="{{tag}}">
+        <span class="checkmark"></span>
+    </label>
+    {% endfor %}
+</div>
+
+</br><br>
+
+<input class="button" type="button" value="Search" onclick="search_question()" id="submit">
+
+</form>
+
+<br><br>
+
+<form id="questionSaveForm" action="">
+<div>
+    <label for="questions_found">Search Result</label>
+    <textarea id="questions_found" name="questions_found"></textarea>
+</div>
+<input class="button" type="button" value="Save" onclick="save_question()" id="submit">
+</form>
+
+
+<script type="text/javascript">
+
+function search_question() {
+    $.ajax({
+        type: 'POST',
+        url: "/question/edit",
+        data: $('#questionEditForm').serialize(),
+    }).done(function(result) {
+        // display in a text area relevant json
+        console.log(result);
+        document.getElementById("questions_found").value = JSON.stringify(result, null, 1);
+    });
+}
+
+function save_question() {
+    $.ajax({
+        type: 'POST',
+        url: "/question/save",
+        data: $('#questionSaveForm').serialize(),
+    }).done(function(result) {
+        alert(result);
+    });
+}
+
+</script>
+
+{% endblock %}

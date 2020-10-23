@@ -29,8 +29,17 @@
 Tags:
 <input type="text" name="tags" placeholder="comma separated" id="tags">
 <br><br>
+<div>
+    {% for tag in tags %}
 
-<input type="button" value="Submit" onclick="on_submit_question()" id="submit">
+    <label class="container">{{tag}}
+        <input type="checkbox" name="tags_selection" value="{{tag}}">
+        <span class="checkmark"></span>
+    </label>
+    {% endfor %}
+</div>
+
+<input class="button" type="button" value="Submit" onclick="on_submit_question()" id="submit">
 
 </form>
 
@@ -40,13 +49,18 @@ Tags:
 function on_submit_question() {
     $.ajax({
         type: 'POST',
-        url: "/question/input",
+        url: "/question/create",
         data: $('#questionForm').serialize(),
     }).done(function(result) {
         // update result text
         console.log(result);
         alert(result);
-        location.replace("/question/input");
+        if (result.includes("not")) {
+            // do nothing
+        }
+        else {
+            location.replace("/question/create");
+        }
     });
 }
 

@@ -79,13 +79,37 @@ def quiz_submit():
     return flask.jsonify(res)
 
 
-@app.route("/question/input", methods=["GET", "POST"])
-def question_input():
-    if request.method == 'GET':
-        # go to input page
+@app.route("/question/edit", methods=["GET", "POST"])
+def question_edit():
+    if request.method == "GET":
         return flask.render_template(
-            "question.html",
+            "question_edit.html",
+            title="Maintain Questions",
+            tags=db.get_all_tags(),
+        )
+    if request.method == "POST":
+        res = db.search_questions(
+            request.form.get("question_keyword"),
+            request.form.getlist("tags"),
+        )
+        return flask.jsonify(res)
+
+
+@app.route("/question/save", methods=["POST"])
+def question_save():
+    questions = eval(request.form.get("questions_found"))
+    print(questions)
+    db.update_questions(questions)
+    return "updated"
+
+
+@app.route("/question/create", methods=["GET", "POST"])
+def question_create():
+    if request.method == 'GET':
+        return flask.render_template(
+            "question_create.html",
             title="Input Questions",
+            tags=db.get_all_tags(),
         )
     if request.method == "POST":
         if (
@@ -95,7 +119,7 @@ def question_input():
             not request.form.get("choice_C_body") or
             not request.form.get("choice_D_body") or
             not request.form.getlist("answer") or
-            not request.form.get("tags")
+            (not request.form.get("tags") and not request.form.getlist("tags_selection"))
         ):
             return "don't leave any field blank! not saved."
 
@@ -115,7 +139,12 @@ def _save_question(form):
             choice["is_answer"] = 1
         choices.append(choice)
     question["choices"] = choices
-    question["tags"] = form.get("tags").split(",")
+    tags = []
+    if form.get("tags"):
+        tags += form.get("tags").split(",")
+    if form.getlist("tags_selection"):
+        tags += form.getlist("tags_selection")
+    question["tags"] = list(set(tags))
     db.save_question(question)
 
 
