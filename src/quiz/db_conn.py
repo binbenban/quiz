@@ -4,10 +4,10 @@ import random
 
 
 class Database:
-    def __init__(self):
-        cur_dir = os.path.abspath(os.path.dirname(__file__))
-        self.question_db = TinyDB(os.path.join(cur_dir, 'db', 'question.json'))
-        self.result_db = TinyDB(os.path.join(cur_dir, 'db', 'result.json'))
+    def __init__(self, db_path):
+        # cur_dir = os.path.abspath(os.path.dirname(__file__))
+        self.question_db = TinyDB(os.path.join(db_path, 'question.json'))
+        self.result_db = TinyDB(os.path.join(db_path, 'result.json'))
 
     def generate_questions(self, tag_list: list, size: int) -> list:
         Question = Query()

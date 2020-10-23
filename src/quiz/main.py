@@ -1,11 +1,12 @@
 import copy
 import os
-import db_conn
 from flask import Flask, request
 import flask
 import string
 import random
 from datetime import datetime
+from config import Config
+import db_conn
 
 
 class QuestionHandler:
@@ -31,7 +32,8 @@ class QuestionHandler:
 
 
 app = Flask(__name__)
-db = db_conn.Database()
+app.config.from_object(Config)
+db = db_conn.Database(app.config['DB_PATH'])
 qh = QuestionHandler()
 
 
