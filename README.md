@@ -2,7 +2,7 @@
 
 [X] Question maintenance screen
 
-[] quiz creation screen, select existing tags
+[X] quiz creation screen, select existing tags
 
 [] in quiz selection, add options
 - number of times answered wrongly
