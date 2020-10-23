@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h3>Question</h3>
+
+<form id="questionForm" action="">
+
+<label for="question_body">Question</label>
+<textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
+</br><br>
+<label for="choice_A_body">A</label>
+<input type="checkbox" name="answer" value="A">
+<textarea id="choice_A_body" name="choice_A_body" rows="4" cols="50"></textarea>
+</br><br>
+<label for="choice_B_body">B</label>
+<input type="checkbox" name="answer" value="B">
+<textarea id="choice_B_body" name="choice_B_body" rows="4" cols="50"></textarea>
+</br><br>
+<label for="choice_B_body">C</label>
+<input type="checkbox" name="answer" value="C">
+<textarea id="choice_C_body" name="choice_C_body" rows="4" cols="50"></textarea>
+</br><br>
+<label for="choice_D_body">D</label>
+<input type="checkbox" name="answer" value="D">
+<textarea id="choice_D_body" name="choice_D_body" rows="4" cols="50"></textarea>
+</br><br>
+
+Tags:
+<input type="text" name="tags" placeholder="comma separated" id="tags">
+<br><br>
+
+<input type="button" value="Submit" onclick="on_submit_question()" id="submit">
+
+</form>
+
+
+<script type="text/javascript">
+
+function on_submit_question() {
+    $.ajax({
+        type: 'POST',
+        url: "/question/input",
+        data: $('#questionForm').serialize(),
+    }).done(function(result) {
+        // update result text
+        console.log(result);
+        alert(result);
+        // TODO clear all fields
+    });
+}
+
+</script>
+
+{% endblock %}
