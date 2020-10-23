@@ -25,3 +25,10 @@ class Database:
     def get_next_question_id(self):
         od = sorted(self.question_db.all(), key=lambda x: x["id"])
         return od[-1]["id"] + 1
+
+    def get_all_tags(self):
+        tags = set()
+        for q in self.question_db.all():
+            for tag in q.get("tags", []):
+                tags.add(tag)
+        return list(tags)

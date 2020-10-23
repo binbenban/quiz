@@ -1,11 +1,9 @@
+## TODO
 
-## enhancement
+Question maintenance screen
 
-read yaml files from a local folder
+in quiz selection, add options
+- number of times answered wrongly
+- last answer is wrong
 
-load all yamls on startup, in __init__
-
-allow editing yaml files
-
-generate yaml files
-
+support pasting image when creating new question. images should be saved and URI saved to DB

@@ -37,16 +37,24 @@ db = db_conn.Database(app.config['DB_PATH'])
 qh = QuestionHandler()
 
 
-@app.route("/quiz/generate", methods=["GET"])
+@app.route("/quiz/generate", methods=["GET", "POST"])
 def quiz_generate():
-    tags = request.args.get('tags')
-    size = request.args.get('size')
-    questions = qh.generate(tags.split(","), int(size))
-    return flask.render_template(
-        "quiz.html",
-        title="Quiz",
-        questions=questions,
-    )
+    if request.method == "GET":
+        # go to page with selections
+        return flask.render_template(
+            "quiz_selection.html",
+            title="Quiz Selection",
+            tags=db.get_all_tags(),
+        )
+    if request.method == "POST":
+        tags = request.form.getlist("tags")
+        size = request.form.get("size")
+        questions = qh.generate(tags, int(size))
+        return flask.render_template(
+            "quiz.html",
+            title="Quiz",
+            questions=questions,
+        )
 
 
 @app.route("/quiz/submit", methods=["POST"])
