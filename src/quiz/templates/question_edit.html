@@ -1,39 +1,35 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block content %}
 
-<h3>Question</h3>
 
-<form id="questionEditForm" action="">
+<form id="questionEditForm" action="" class="w3-container w3-card-4 w3-light-grey">
+    <h2>Search and edit existing questions</h2>
 
-<label for="question_keyword">Any text appearing in question: </label>
-<input type="text" id="question_keyword" name="question_keyword">
-<br><br>
-
-<div>
+    <p>
+        <label>Enter any text in question: </label>
+        <input class="w3-input w3-border w3-round" type="text" id="question_keyword" name="question_keyword">
+    </p>
+        
     {% for tag in tags %}
-
-    <label class="container">{{tag}}
-        <input type="checkbox" name="tags" value="{{tag}}">
-        <span class="checkmark"></span>
-    </label>
+    <p>
+        <input class="w3-check" type="checkbox" name="tags" value="{{tag}}">
+        <label>{{tag}}</label></p>
+    </p>
     {% endfor %}
-</div>
 
-</br><br>
-
-<input class="button" type="button" value="Search" onclick="search_question()" id="submit">
+    <input class="button" type="button" value="Search" onclick="search_question()" id="submit">
 
 </form>
 
 <br><br>
 
-<form id="questionSaveForm" action="">
-<div>
-    <label for="questions_found">Search Result</label>
-    <textarea id="questions_found" name="questions_found"></textarea>
-</div>
-<input class="button" type="button" value="Save" onclick="save_question()" id="submit">
+<form id="questionSaveForm" action="" class="w3-container w3-card-4 w3-light-grey">
+    <div>
+        <h2>Search Result</h2>
+        <textarea id="questions_found" name="questions_found"></textarea>
+    </div>
+    <input class="button" type="button" value="Save" onclick="save_question()" id="submit">
 </form>
 
 

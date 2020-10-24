@@ -7,6 +7,7 @@
     <meta name="description" content={{description}}>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.1/pure-min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="http://www-db.deis.unibo.it/courses/TW/DOCS/w3schools/lib/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -125,13 +126,6 @@
 
       body {margin:0;padding:0}
 
-      input[type=text] {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        box-sizing: border-box;
-      }
-
       textarea {
         width: 100%;
         height: 150px;
@@ -144,10 +138,17 @@
       }
   </style>
   </head>
-  <body>
 
-    {% include 'navigation.html' %}
-    {% block content %}{% endblock %}
+  <body>
+    <ul class="w3-navbar w3-black">
+      <li><a href="/quiz/generate">Quiz</a></li>
+      <li><a href="/question/create">Create Q</a></li>
+      <li><a href="/question/edit">Edit Q</a></li>
+    </ul>
+
+    <div>
+      {% block content %}{% endblock %}
+    </div>
   </body>
 
 </html>

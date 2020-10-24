@@ -88,6 +88,7 @@ def question_edit():
             tags=db.get_all_tags(),
         )
     if request.method == "POST":
+        print(request.form)
         res = db.search_questions(
             request.form.get("question_keyword"),
             request.form.getlist("tags"),

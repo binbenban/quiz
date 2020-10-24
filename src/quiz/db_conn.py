@@ -36,11 +36,14 @@ class Database:
     def search_questions(self, question_keyword: str, tags: list) -> list:
         Question = Query()
         all_res = self.question_db.search(Question.tags.any(tags))
+        print(question_keyword)
+        print(tags)
+        print(all_res)
         if question_keyword:
             all_res = [
                 x
                 for x in all_res 
-                if question_keyword in x["question_body"]
+                if question_keyword.lower() in x["question_body"].lower()
             ]
         return all_res
 

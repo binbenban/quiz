@@ -8,4 +8,6 @@
 - number of times answered wrongly
 - last answer is wrong
 
+[] report
+
 [] support pasting image when creating new question. images should be saved and URI saved to DB

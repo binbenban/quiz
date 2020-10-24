@@ -2,44 +2,54 @@
 
 {% block content %}
 
-<h3>Question</h3>
 
-<form id="questionForm" action="">
+<form id="questionForm" action="" class="w3-container w3-card-4 w3-light-grey">
 
-<label for="question_body">Question</label>
-<textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
-</br><br>
-<label for="choice_A_body">A</label>
-<input type="checkbox" name="answer" value="A">
-<textarea id="choice_A_body" name="choice_A_body" rows="4" cols="50"></textarea>
-</br><br>
-<label for="choice_B_body">B</label>
-<input type="checkbox" name="answer" value="B">
-<textarea id="choice_B_body" name="choice_B_body" rows="4" cols="50"></textarea>
-</br><br>
-<label for="choice_B_body">C</label>
-<input type="checkbox" name="answer" value="C">
-<textarea id="choice_C_body" name="choice_C_body" rows="4" cols="50"></textarea>
-</br><br>
-<label for="choice_D_body">D</label>
-<input type="checkbox" name="answer" value="D">
-<textarea id="choice_D_body" name="choice_D_body" rows="4" cols="50"></textarea>
-</br><br>
+    <p><h2>Create a new question</h2></p>
 
-Tags:
-<input type="text" name="tags" placeholder="comma separated" id="tags">
-<br><br>
-<div>
+    <p><h3>Question</h3></p>
+
+    <p>
+    <textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
+    </p>
+    
+    <p>
+    <label for="choice_A_body">A</label>
+    <input class="w3-check" type="checkbox" name="answer" value="A">
+    </p>
+    <textarea id="choice_A_body" name="choice_A_body" rows="4" cols="50"></textarea>
+
+    <p>
+        <label for="choice_B_body">B</label>
+        <input class="w3-check" type="checkbox" name="answer" value="B">
+    </p>
+    <textarea id="choice_B_body" name="choice_B_body" rows="4" cols="50"></textarea>
+
+    <p>
+        <label for="choice_B_body">C</label>
+        <input class="w3-check" type="checkbox" name="answer" value="C">
+    </p>
+    <textarea id="choice_C_body" name="choice_C_body" rows="4" cols="50"></textarea>
+
+    <p>
+        <label for="choice_D_body">D</label>
+        <input class="w3-check" type="checkbox" name="answer" value="D">
+    </p>
+    <textarea id="choice_D_body" name="choice_D_body" rows="4" cols="50"></textarea>
+
+    <p>
+    Tags:
+    <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated" id="tags">
+    </p>
+
     {% for tag in tags %}
-
-    <label class="container">{{tag}}
-        <input type="checkbox" name="tags_selection" value="{{tag}}">
-        <span class="checkmark"></span>
-    </label>
+    <p>
+        <input class="w3-check" type="checkbox" name="tags_selection" value="{{tag}}">
+        <label>{{tag}}</label></p>
+    </p>
     {% endfor %}
-</div>
 
-<input class="button" type="button" value="Submit" onclick="on_submit_question()" id="submit">
+    <input class="button" type="button" value="Submit" onclick="on_submit_question()" id="submit">
 
 </form>
 
