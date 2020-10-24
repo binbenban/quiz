@@ -13,8 +13,8 @@ class QuestionHandler:
     def __init__(self):
         self.questions = []
     
-    def generate(self, tag_list: list, size: int):
-        raw = db.generate_questions(tag_list, size)
+    def generate(self, tag_list: list, size: int, times_wrong: int, last_wrong: bool):
+        raw = db.generate_questions(tag_list, size, times_wrong, last_wrong)
         self.questions = self.enrich_questions(raw)
         return self.questions
 
@@ -47,9 +47,15 @@ def quiz_generate():
             tags=db.get_all_tags(),
         )
     if request.method == "POST":
+        print(request.form)
         tags = request.form.getlist("tags")
         size = request.form.get("size")
-        questions = qh.generate(tags, int(size))
+        times_wrong = request.form.get("times_wrong")
+        if times_wrong:
+            times_wrong = int(times_wrong)
+        last_wrong = request.form.get("last_wrong") is not None
+        
+        questions = qh.generate(tags, int(size), times_wrong, last_wrong)
         return flask.render_template(
             "quiz.html",
             title="Quiz",

@@ -10,7 +10,8 @@
         <label>Enter any text in question: </label>
         <input class="w3-input w3-border w3-round" type="text" id="question_keyword" name="question_keyword">
     </p>
-        
+    
+    <label>Tags:</label>
     {% for tag in tags %}
     <p>
         <input class="w3-check" type="checkbox" name="tags" value="{{tag}}">
@@ -25,10 +26,11 @@
 <br><br>
 
 <form id="questionSaveForm" action="" class="w3-container w3-card-4 w3-light-grey">
-    <div>
-        <h2>Search Result</h2>
+    <p><h2>Search Result</h2></p>
+
+    <p>
         <textarea id="questions_found" name="questions_found"></textarea>
-    </div>
+    </p>
     <input class="button" type="button" value="Save" onclick="save_question()" id="submit">
 </form>
 

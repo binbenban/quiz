@@ -6,18 +6,26 @@
 
     <h2>How do you want your questions?</h2>
 
-    <p><h3>Select tags</h3></p>
-
     {% for tag in tags %}
     <p>
-        <input class="w3-check" type="checkbox" name="tags" value="{{tag}}">
+        <input type="checkbox" class="w3-check" name="tags" value="{{tag}}">
         <label>{{tag}}</label></p>
     </p>
     {% endfor %}
 
-    <p><h3>Number of questions</h3></p>
     <p>
+        <label>Number of questions</label>
         <input type="number" id="size" name="size" min="1" max="50" value="10">
+    </p>
+
+    <p>
+        <label>Number of times answered wrongly</label>
+        <input type="number" name="times_wrong" min="1" max="10" value="2">
+    </p>
+
+    <p>
+        <label>Answered wrong last time</label>
+        <input type="checkbox" class="w3-check" name="last_wrong" >
     </p>
 
     <input class="button" type="submit" id="submit">

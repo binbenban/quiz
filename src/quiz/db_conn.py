@@ -1,6 +1,7 @@
 from tinydb import TinyDB, Query
 import os
 import random
+from collections import Counter
 
 
 class Database:
@@ -9,11 +10,37 @@ class Database:
         self.question_db = TinyDB(os.path.join(db_path, 'question.json'))
         self.result_db = TinyDB(os.path.join(db_path, 'result.json'))
 
-    def generate_questions(self, tag_list: list, size: int) -> list:
-        Question = Query()
-        all_res = self.question_db.search(Question.tags.any(tag_list))
-        random.shuffle(all_res)
-        return all_res[:size]
+    def generate_questions(
+        self, tag_list: list, size: int, times_wrong: int = 0, last_wrong: bool = False
+    ) -> list:
+        questions = self.question_db.search(Query().tags.any(tag_list))
+
+        if times_wrong:
+            wrong_results = [x for x in self.result_db.search(Query().correct == False)]
+            wrong_id_counts = Counter([x["id"] for x in wrong_results])
+            wrong_ids = [k for k, v in wrong_id_counts.items() if v >= times_wrong]
+            # filter by ids
+            questions = [x for x in questions if x["id"] in wrong_ids]
+        
+        if last_wrong:
+            questions_temp = []
+            ids = [x["id"] for x in questions]
+            all_results = [x for x in self.result_db.search(Query().id.any(ids))]
+            for q in questions:
+                # search the last result in all_results
+                last_timestamp = "00000000 00:00:00"
+                last_result = None
+                for r in all_results:
+                    if r["id"] == q["id"]:
+                        if r["timestamp"] > last_timestamp:
+                            last_timestamp = r["timestamp"]
+                            last_result = r["correct"]
+                if not last_result:  # not found or last wrong
+                    questions_temp.append(q)
+            questions = questions_temp
+
+        random.shuffle(questions)
+        return questions[:size]
 
     def save_question(self, question):
         self.question_db.insert(question)
@@ -31,21 +58,19 @@ class Database:
         for q in self.question_db.all():
             for tag in q.get("tags", []):
                 tags.add(tag)
-        return list(tags)
+        return sorted(list(tags))
 
     def search_questions(self, question_keyword: str, tags: list) -> list:
         Question = Query()
-        all_res = self.question_db.search(Question.tags.any(tags))
-        print(question_keyword)
-        print(tags)
-        print(all_res)
+        res = self.question_db.search(Question.tags.any(tags))
         if question_keyword:
-            all_res = [
+            res = [
                 x
-                for x in all_res 
+                for x in res 
                 if question_keyword.lower() in x["question_body"].lower()
             ]
-        return all_res
+
+        return res
 
     def update_questions(self, questions: list):
         for q in questions:

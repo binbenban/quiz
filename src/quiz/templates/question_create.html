@@ -7,10 +7,10 @@
 
     <p><h2>Create a new question</h2></p>
 
-    <p><h3>Question</h3></p>
 
     <p>
-    <textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
+        <label>Question</label>
+        <textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
     </p>
     
     <p>
@@ -38,8 +38,8 @@
     <textarea id="choice_D_body" name="choice_D_body" rows="4" cols="50"></textarea>
 
     <p>
-    Tags:
-    <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated" id="tags">
+    <label>Tags:</label>
+    <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated for new tags" id="tags">
     </p>
 
     {% for tag in tags %}
