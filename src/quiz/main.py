@@ -37,6 +37,7 @@ db = db_conn.Database(app.config['DB_PATH'])
 qh = QuestionHandler()
 
 
+@app.route("/", methods=["GET"])
 @app.route("/quiz/generate", methods=["GET", "POST"])
 def quiz_generate():
     if request.method == "GET":

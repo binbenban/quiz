@@ -59,15 +59,6 @@ function save_question() {
     });
 }
 
-
-$(document).ready(function() {
-    var pw = window.prompt("Enter password: ");
-	if (pw != "5566") {
-        alert("incorrect password. Not allowed to edit");
-    	location.replace("/quiz/generate");
-    }
-});
-
 </script>
 
 {% endblock %}
