@@ -5,17 +5,19 @@
 
 <form id="questionForm" action="" class="w3-container w3-card-4 w3-light-grey">
 
-    <p><h2>Create a new question</h2></p>
+    <p>
+    <h2>Create a new question</h2>
+    </p>
 
 
     <p>
         <label>Question</label>
         <textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
     </p>
-    
+
     <p>
-    <label for="choice_A_body">A</label>
-    <input class="w3-check" type="checkbox" name="answer" value="A">
+        <label for="choice_A_body">A</label>
+        <input class="w3-check" type="checkbox" name="answer" value="A">
     </p>
     <textarea id="choice_A_body" name="choice_A_body" rows="4" cols="50"></textarea>
 
@@ -38,8 +40,8 @@
     <textarea id="choice_D_body" name="choice_D_body" rows="4" cols="50"></textarea>
 
     <p>
-    <label>Tags:</label>
-    <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated for new tags" id="tags">
+        <label>Tags:</label>
+        <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated for new tags" id="tags">
     </p>
 
     {% for tag in tags %}
@@ -49,6 +51,10 @@
     </p>
     {% endfor %}
 
+    <p>
+        <textarea id="post-content"></textarea>
+    </p>
+
     <input class="button" type="button" value="Submit" onclick="on_submit_question()" id="submit">
 
 </form>
@@ -56,23 +62,52 @@
 
 <script type="text/javascript">
 
-function on_submit_question() {
-    $.ajax({
-        type: 'POST',
-        url: "/question/create",
-        data: $('#questionForm').serialize(),
-    }).done(function(result) {
-        // update result text
-        console.log(result);
-        alert(result);
-        if (result.includes("not")) {
-            // do nothing
-        }
-        else {
-            location.replace("/question/create");
-        }
+    function on_submit_question() {
+        $.ajax({
+            type: 'POST',
+            url: "/question/create",
+            data: $('#questionForm').serialize(),
+        }).done(function (result) {
+            // update result text
+            console.log(result);
+            alert(result);
+            if (result.includes("not")) {
+                // do nothing
+            }
+            else {
+                location.replace("/question/create");
+            }
+        });
+    }
+
+    function ajax_data_url(data_url, file_name) {
+        // pass
+    }
+
+    // Get paste.js to watch our text area
+    $('#post-content').pastableTextarea();
+
+    $('#post-content').on('pastImage', function (ev, data) {
+        // paste.js detected an image being pasted
+        // dataURL is the base64/png of the pasted image
+        console.log("dataURL: " + data.dataURL);
+
+        // Prompt user for a file name to save the image as
+        var file_name = prompt("Enter a file name", ".jpg");
+
+        // Send image and filename to server
+        ajax_data_url(data.dataURL, file_name);
+
+    }).on('pasteImageError', function (ev, data) {
+        // I suppose this is for incompatible browsers
+        console.log("error: " + data.message);
+
+    }).on('pasteText', function (ev, data) {
+        // paste.js detected text being pasted and will
+        // automatically insert into the text area for us
+        console.log("text: " + data.text);
+
     });
-}
 
 </script>
 
