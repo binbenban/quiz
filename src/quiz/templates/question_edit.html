@@ -10,7 +10,7 @@
         <label>Enter any text in question: </label>
         <input class="w3-input w3-border w3-round" type="text" id="question_keyword" name="question_keyword">
     </p>
-    
+
     <label>Tags:</label>
     {% for tag in tags %}
     <p>
@@ -26,38 +26,50 @@
 <br><br>
 
 <form id="questionSaveForm" action="" class="w3-container w3-card-4 w3-light-grey">
-    <p><h2>Search Result</h2></p>
+    <p>
+    <h2>Search Result</h2>
+    </p>
 
     <p>
-        <textarea id="questions_found" name="questions_found"></textarea>
+        <div class="rich_div" id="questions_found" name="questions_found"></div>
     </p>
-    <input class="button" type="button" value="Save" onclick="save_question()" id="submit">
 </form>
 
 
 <script type="text/javascript">
 
-function search_question() {
-    $.ajax({
-        type: 'POST',
-        url: "/question/edit",
-        data: $('#questionEditForm').serialize(),
-    }).done(function(result) {
-        // display in a text area relevant json
-        console.log(result);
-        document.getElementById("questions_found").value = JSON.stringify(result, null, 1);
-    });
-}
+    function search_question() {
+        $.ajax({
+            type: 'POST',
+            url: "/question/edit",
+            data: $('#questionEditForm').serialize(),
+        }).done(function (result) {
+            // display in a text area relevant json
+            console.log(result);
+            // display list of questions
+            html = "<label>Nothing found</label>";
 
-function save_question() {
-    $.ajax({
-        type: 'POST',
-        url: "/question/save",
-        data: $('#questionSaveForm').serialize(),
-    }).done(function(result) {
-        alert(result);
-    });
-}
+            if (result != null) {
+                html = "";
+                for (i = 0; i < result.length; i++) {
+                    html += "<a href='/question/edit/" + result[i]['id'] + "'>Edit</a><br>";
+                    html += atob(result[i]['question_body']);
+                    html += "<br><br>"
+                }
+            }
+            document.getElementById("questions_found").innerHTML = html;
+        });
+    }
+
+    function save_question() {
+        $.ajax({
+            type: 'POST',
+            url: "/question/save",
+            data: $('#questionSaveForm').serialize(),
+        }).done(function (result) {
+            alert(result);
+        });
+    }
 
 </script>
 

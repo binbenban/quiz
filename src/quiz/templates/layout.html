@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="http://www-db.deis.unibo.it/courses/TW/DOCS/w3schools/lib/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paste.js/0.0.21/paste.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -124,8 +125,6 @@
         cursor: pointer;
       }
 
-      body {margin:0;padding:0}
-
       textarea {
         width: 100%;
         height: 150px;
@@ -136,8 +135,39 @@
         background-color: #f8f8f8;
         /* resize: none; */
       }
+
+      .rich_div {
+        -moz-appearance: textfield-multiline;
+        -webkit-appearance: textarea;
+        border: 1px solid gray;
+        font: large -moz-fixed;
+        /* font: -webkit-large-control; */
+        font-size: 20px;
+        height: 138px;
+        overflow: auto;
+        padding: 20px;
+        resize: both;
+        width: 100%;
+      }
+
   </style>
   </head>
+
+  <script>
+    function convert_base64() {
+        var x, i;
+        x = document.querySelectorAll(".convert");
+        for (i = 0; i < x.length; i++) {
+            try {
+                atob(x[i].innerHTML);
+                x[i].innerHTML = atob(x[i].innerHTML);
+            }
+            catch (e) {}
+        }
+
+    }
+
+  </script>
 
   <body>
     <ul class="w3-navbar w3-black">

@@ -5,46 +5,64 @@
 
 <form id="questionForm" action="" class="w3-container w3-card-4 w3-light-grey">
 
-    <p><h2>Create a new question</h2></p>
+    <p>
+    <h2>Create a new question</h2>
+    </p>
 
+    <input type="hidden" name="id" value="{{question['id']}}">
 
     <p>
         <label>Question</label>
-        <textarea id="question_body" name="question_body" rows="4" cols="50"></textarea>
+        <div class="rich_div convert" id="question_body_input" name="question_body_input" height="238px" contenteditable="">
+            {{question["question_body"]}}
+        </div>
+        <input type="hidden" id="question_body" name="question_body">
     </p>
-    
-    <p>
-    <label for="choice_A_body">A</label>
-    <input class="w3-check" type="checkbox" name="answer" value="A">
-    </p>
-    <textarea id="choice_A_body" name="choice_A_body" rows="4" cols="50"></textarea>
 
     <p>
-        <label for="choice_B_body">B</label>
-        <input class="w3-check" type="checkbox" name="answer" value="B">
+        <label for="choice_A_body_input">A</label>
+        <input class="w3-check" type="checkbox" name="answer" value="A" {% if question['choices'][0].get("is_answer") %}checked{% endif %}>
     </p>
-    <textarea id="choice_B_body" name="choice_B_body" rows="4" cols="50"></textarea>
+    <div class="rich_div convert" id="choice_A_body_input" name="choice_A_body_input" contenteditable="">
+        {{question['choices'][0]['choice_body']}}
+    </div>
+    <input type="hidden" id="choice_A_body" name="choice_A_body">
 
     <p>
-        <label for="choice_B_body">C</label>
-        <input class="w3-check" type="checkbox" name="answer" value="C">
+        <label for="choice_B_body_input">B</label>        
+        <input class="w3-check" type="checkbox" name="answer" value="B" {% if question['choices'][1].get("is_answer") %}checked{% endif %}>
     </p>
-    <textarea id="choice_C_body" name="choice_C_body" rows="4" cols="50"></textarea>
+    <div class="rich_div convert" id="choice_B_body_input" name="choice_B_body_input" contenteditable="">
+        {{question['choices'][1]['choice_body']}}
+    </div>
+    <input type="hidden" id="choice_B_body" name="choice_B_body">
 
     <p>
-        <label for="choice_D_body">D</label>
-        <input class="w3-check" type="checkbox" name="answer" value="D">
+        <label for="choice_C_body_input">C</label>        
+        <input class="w3-check" type="checkbox" name="answer" value="C" {% if question['choices'][2].get("is_answer") %}checked{% endif %}>
     </p>
-    <textarea id="choice_D_body" name="choice_D_body" rows="4" cols="50"></textarea>
+    <div class="rich_div convert" id="choice_C_body_input" name="choice_C_body_input" contenteditable="">
+        {{question['choices'][2]['choice_body']}}
+    </div>
+    <input type="hidden" id="choice_C_body" name="choice_C_body">
 
     <p>
-    <label>Tags:</label>
-    <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated for new tags" id="tags">
+        <label for="choice_D_body_input">D</label>
+        <input class="w3-check" type="checkbox" name="answer" value="D" {% if question['choices'][3].get("is_answer") %}checked{% endif %}>
+    </p>
+    <div class="rich_div convert" id="choice_D_body_input" name="choice_D_body_input" contenteditable="">
+        {{question['choices'][3]['choice_body']}}
+    </div>
+    <input type="hidden" id="choice_D_body" name="choice_D_body">
+
+    <p>
+        <label>Tags:</label>
+        <input class="w3-input w3-border" type="text" name="tags" placeholder="comma separated for new tags" id="tags">
     </p>
 
     {% for tag in tags %}
     <p>
-        <input class="w3-check" type="checkbox" name="tags_selection" value="{{tag}}">
+        <input class="w3-check" type="checkbox" name="tags_selection" value="{{tag}}" {% if tag in question["tags"] %}checked{% endif %}>
         <label>{{tag}}</label></p>
     </p>
     {% endfor %}
@@ -55,24 +73,34 @@
 
 
 <script type="text/javascript">
+    $('document').ready(convert_base64);
 
-function on_submit_question() {
-    $.ajax({
-        type: 'POST',
-        url: "/question/create",
-        data: $('#questionForm').serialize(),
-    }).done(function(result) {
-        // update result text
-        console.log(result);
-        alert(result);
-        if (result.includes("not")) {
-            // do nothing
+    function on_submit_question() {
+        // question and answers - convert inner HTML
+        encode_ids = ["question_body_input", "choice_A_body_input", "choice_B_body_input", "choice_C_body_input", "choice_D_body_input"]
+        for (i = 0; i < encode_ids.length; i++) {
+            id = encode_ids[i];
+            id_stripped = id.replace("_input", "");
+            console.log(id_stripped);
+            document.getElementById([id_stripped]).value = btoa(document.getElementById(id).innerHTML);
         }
-        else {
-            location.replace("/question/create");
-        }
-    });
-}
+
+        $.ajax({
+            type: 'POST',
+            url: "/question/create",
+            data: $('#questionForm').serialize(),
+        }).done(function (result) {
+            // update result text
+            console.log(result);
+            alert(result);
+            if (result.includes("not")) {
+                // do nothing
+            }
+            else {
+                location.replace("/question/create");
+            }
+        });
+    }
 
 </script>
 

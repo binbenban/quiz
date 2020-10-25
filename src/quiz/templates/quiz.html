@@ -2,36 +2,33 @@
 
 {% block content %}
 
-<form id="quizForm">
-{% for q in questions %}
+<form id="quizForm" class="w3-container w3-card-4 w3-light-grey">
+    {% for q in questions %}
 
-<h3>
-    Question: {{ q["session_id"] }}
-</h3>
-</br>
+    <p>
+    <h2>
+        Question: {{ q["session_id"] }}
+    </h2>
+    </p>
 
-<h3>
-    {{q["question_body"]}}
-</h3>
-</br>
+    <p>
+    <div class="rich_div convert">{{q["question_body"]}}</div>
+    </p>
 
-<div>
     {% for ch in q["choices"] %}
-
-    <label class="container">{{ch['option']}}. {{ch['choice_body']}}
-        <input type="checkbox" name="{{q['session_id']}}" value="{{ch['option']}}">
-        <span class="checkmark"></span>
-    </label>
+    <p>
+        <input class="w3-check" type="checkbox" name="{{q['session_id']}}" value="{{ch['option']}}">
+        <label>{{ch['option']}}. </label>
+        <div class="rich_div convert">{{ch['choice_body']}}</div>
+    </p>
     {% endfor %}
-</div>
-</br>
 
-<div id="{{q['session_id']}}-result">
-</div>
-</br>
-{% endfor %}
+    <p>
+    <div id="{{q['session_id']}}-result"></div>
+    </p>
+    {% endfor %}
 
-<input class="button" type="button" value="Submit" onclick="on_submit_quiz()" id="submit">
+    <input class="button" type="button" value="Submit" onclick="on_submit_quiz()" id="submit">
 
 </form>
 
@@ -39,20 +36,22 @@
 
 <script type="text/javascript">
 
-function on_submit_quiz() {
-    $.ajax({
-        type: 'POST',
-        url: "/quiz/submit",
-        data: $('#quizForm').serialize(),
-    }).done(function(result) {
-        // update result text
-        for (i = 0; i < result.length; i++) {
-            q_result = result[i];
-            div_id = q_result['session_id'] + "-result";
-            document.getElementById(div_id).innerHTML = q_result["result"];
-        }
-    });
-}
+    $('document').ready(convert_base64);
+
+    function on_submit_quiz() {
+        $.ajax({
+            type: 'POST',
+            url: "/quiz/submit",
+            data: $('#quizForm').serialize(),
+        }).done(function (result) {
+            // update result text
+            for (i = 0; i < result.length; i++) {
+                q_result = result[i];
+                div_id = q_result['session_id'] + "-result";
+                document.getElementById(div_id).innerHTML = q_result["result"];
+            }
+        });
+    }
 
 </script>
 

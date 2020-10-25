@@ -103,14 +103,18 @@ def question_edit():
         return flask.jsonify(res)
 
 
-@app.route("/question/save", methods=["POST"])
-def question_save():
-    questions = eval(request.form.get("questions_found"))
-    print(questions)
-    db.update_questions(questions)
-    return "updated"
+@app.route("/question/edit/<qid>", methods=["GET"])
+def question_edit_one(qid):
+    question = db.search_question_by_qid(int(qid))
+    return flask.render_template(
+        "question_create.html",
+        title="Edit one question",
+        question=question,
+        tags=db.get_all_tags(),
+    )
 
 
+# TODO if question_id == -1, then create; else update
 @app.route("/question/create", methods=["GET", "POST"])
 def question_create():
     if request.method == 'GET':
@@ -118,8 +122,21 @@ def question_create():
             "question_create.html",
             title="Input Questions",
             tags=db.get_all_tags(),
+            # dummy question
+            question={
+                "id": -1,
+                "question_body": "",
+                "choices": [
+                    {"choice_body": ""},
+                    {"choice_body": ""},
+                    {"choice_body": ""},
+                    {"choice_body": ""},
+                ],
+                "tags": [],
+            }
         )
     if request.method == "POST":
+        print(request.form)
         if (
             not request.form.get("question_body") or
             not request.form.get("choice_A_body") or
@@ -137,7 +154,11 @@ def question_create():
 
 def _save_question(form):
     question = {}
-    question["id"] = db.get_next_question_id()
+    if form.get("id"):
+        question["id"] = int(form.get("id"))
+    else:
+        question["id"] = db.get_next_question_id()
+
     question["question_body"] = form.get("question_body")
     choices = []
     for option in ["A", "B", "C", "D"]:
@@ -150,8 +171,9 @@ def _save_question(form):
     tags = []
     if form.get("tags"):
         tags += form.get("tags").split(",")
-    if form.getlist("tags_selection"):
-        tags += form.getlist("tags_selection")
+    if form.get("tags_selection"):
+        tags_list = [x.strip() for x in form.getlist("tags_selection")]
+        tags += tags_list
     question["tags"] = list(set(tags))
     db.save_question(question)
 
