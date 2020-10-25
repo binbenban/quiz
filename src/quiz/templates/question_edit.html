@@ -31,9 +31,8 @@
     </p>
 
     <p>
-        <textarea id="questions_found" name="questions_found"></textarea>
+        <div class="rich_div" id="questions_found" name="questions_found"></div>
     </p>
-    <input class="button" type="button" value="Save" onclick="save_question()" id="submit">
 </form>
 
 
@@ -47,7 +46,18 @@
         }).done(function (result) {
             // display in a text area relevant json
             console.log(result);
-            document.getElementById("questions_found").value = JSON.stringify(result, null, 1);
+            // display list of questions
+            html = "<label>Nothing found</label>";
+
+            if (result != null) {
+                html = "";
+                for (i = 0; i < result.length; i++) {
+                    html += "<a href='/question/edit/" + result[i]['id'] + "'>Edit</a><br>";
+                    html += atob(result[i]['question_body']);
+                    html += "<br><br>"
+                }
+            }
+            document.getElementById("questions_found").innerHTML = html;
         });
     }
 

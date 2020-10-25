@@ -1,6 +1,7 @@
 from tinydb import TinyDB, Query
 import os
 import random
+import base64
 from collections import Counter
 
 
@@ -43,6 +44,10 @@ class Database:
         return questions[:size]
 
     def save_question(self, question):
+        Question = Query()
+        exists = self.question_db.search(Question.id == question['id'])
+        if exists:
+            self.question_db.remove(Question.id == question['id'])
         self.question_db.insert(question)
 
     def save_result(self, result):
@@ -65,11 +70,10 @@ class Database:
         res = self.question_db.search(Question.tags.any(tags))
         if question_keyword:
             res = [
-                x
-                for x in res 
-                if question_keyword.lower() in x["question_body"].lower()
+                x for x in res 
+                if question_keyword.lower() in \
+                    str(base64.b64decode(x["question_body"].encode()).lower())
             ]
-
         return res
 
     def update_questions(self, questions: list):
@@ -77,3 +81,11 @@ class Database:
             Question = Query()
             self.question_db.remove(Question.id == q["id"])
             self.question_db.insert(q)
+
+    def search_question_by_qid(self, qid: int) -> dict:
+        Question = Query()
+        res = self.question_db.search(Question.id == qid)
+        if res:
+            return res[0]
+        else:
+            return None
