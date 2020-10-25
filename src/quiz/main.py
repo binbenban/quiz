@@ -120,6 +120,7 @@ def question_create():
             tags=db.get_all_tags(),
         )
     if request.method == "POST":
+        print(request.form)
         if (
             not request.form.get("question_body") or
             not request.form.get("choice_A_body") or
@@ -127,7 +128,7 @@ def question_create():
             not request.form.get("choice_C_body") or
             not request.form.get("choice_D_body") or
             not request.form.getlist("answer") or
-            (not request.form.get("tags") and not request.form.getlist("tags_selection"))
+            (not request.form.get("tags") and not request.form.get("tags_selection"))
         ):
             return "don't leave any field blank! not saved."
 
@@ -150,8 +151,9 @@ def _save_question(form):
     tags = []
     if form.get("tags"):
         tags += form.get("tags").split(",")
-    if form.getlist("tags_selection"):
-        tags += form.getlist("tags_selection")
+    if form.get("tags_selection"):
+        tags_list = [x.strip() for x in form.get("tags_selection").split(",")]
+        tags += tags_list
     question["tags"] = list(set(tags))
     db.save_question(question)
 

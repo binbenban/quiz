@@ -2,33 +2,30 @@
 
 {% block content %}
 
-<form id="quizForm">
+<form id="quizForm" class="w3-container w3-card-4 w3-light-grey">
     {% for q in questions %}
 
-    <h3>
+    <p>
+    <h2>
         Question: {{ q["session_id"] }}
-    </h3>
-    </br>
+    </h2>
+    </p>
 
-    <h3>
-        {{q["question_body"]}}
-    </h3>
-    </br>
+    <p>
+    <div class="rich_div convert">{{q["question_body"]}}</div>
+    </p>
 
-    <div>
-        {% for ch in q["choices"] %}
+    {% for ch in q["choices"] %}
+    <p>
+        <input class="w3-check" type="checkbox" name="{{q['session_id']}}" value="{{ch['option']}}">
+        <label>{{ch['option']}}. </label>
+        <div class="rich_div convert">{{ch['choice_body']}}</div>
+    </p>
+    {% endfor %}
 
-        <label class="container">{{ch['option']}}. {{ch['choice_body']}}
-            <input type="checkbox" name="{{q['session_id']}}" value="{{ch['option']}}">
-            <span class="checkmark"></span>
-        </label>
-        {% endfor %}
-    </div>
-    </br>
-
-    <div id="{{q['session_id']}}-result">
-    </div>
-    </br>
+    <p>
+    <div id="{{q['session_id']}}-result"></div>
+    </p>
     {% endfor %}
 
     <input class="button" type="button" value="Submit" onclick="on_submit_quiz()" id="submit">
@@ -38,6 +35,21 @@
 <br>
 
 <script type="text/javascript">
+
+    function convert_base64() {
+        var x, i;
+        x = document.querySelectorAll(".convert");
+        for (i = 0; i < x.length; i++) {
+            try {
+                atob(x[i].innerHTML);
+                x[i].innerHTML = atob(x[i].innerHTML);
+            }
+            catch (e) {}
+        }
+
+    }
+
+    $('document').ready(convert_base64);
 
     function on_submit_quiz() {
         $.ajax({
