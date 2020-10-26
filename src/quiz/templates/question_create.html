@@ -6,10 +6,10 @@
 <form id="questionForm" action="" class="w3-container w3-card-4 w3-light-grey">
 
     <p>
-    <h2>Create a new question</h2>
+    <h2>Maintain question</h2>
     </p>
 
-    <input type="hidden" name="id" value="{{question['id']}}">
+    <input type="hidden" name="id" id="qid" value="{{question['id']}}">
 
     <p>
         <label>Question</label>
@@ -67,7 +67,10 @@
     </p>
     {% endfor %}
 
-    <input class="button" type="button" value="Submit" onclick="on_submit_question()" id="submit">
+    <input class="button" type="button" value="Save" onclick="save_question()" id="submit">
+    {% if question.get("id") %}
+    <input class="button" type="button" value="Delete" onclick="delete_question()" id="submit">
+    {% endif %}
 
 </form>
 
@@ -75,7 +78,26 @@
 <script type="text/javascript">
     $('document').ready(convert_base64);
 
-    function on_submit_question() {
+    function delete_question() {
+        qid = document.getElementById("qid").value;
+        if (qid != null) {
+            var ok = confirm("Delete question?");
+            if (ok) {
+                $.ajax({
+                    type: 'POST',
+                    url: "/question/delete",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        "qid": qid
+                    })
+                }).done(function (result) {
+                    location.replace("/question/edit");
+                });
+            }
+        }
+    }
+
+    function save_question() {
         // question and answers - convert inner HTML
         encode_ids = ["question_body_input", "choice_A_body_input", "choice_B_body_input", "choice_C_body_input", "choice_D_body_input"]
         for (i = 0; i < encode_ids.length; i++) {

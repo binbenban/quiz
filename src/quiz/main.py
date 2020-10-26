@@ -114,7 +114,19 @@ def question_edit_one(qid):
     )
 
 
-# TODO if question_id == -1, then create; else update
+@app.route("/question/delete", methods=["POST"])
+def question_delete():
+    qid = request.json["qid"]
+    print(f"received {qid}")
+    try:
+        qid = int(qid)
+        db.delete_question_by_id(qid)
+        print(f"deleted {qid} fine")
+    except Exception as e:
+        print(e)
+    return "deleted"
+
+
 @app.route("/question/create", methods=["GET", "POST"])
 def question_create():
     if request.method == 'GET':
@@ -124,7 +136,7 @@ def question_create():
             tags=db.get_all_tags(),
             # dummy question
             question={
-                "id": -1,
+                # "id": -1,
                 "question_body": "",
                 "choices": [
                     {"choice_body": ""},

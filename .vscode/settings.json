@@ -1,6 +1,5 @@
 {
     "python.formatting.provider": "black",
-    "python.pythonPath": "/home/bwang10/miniconda3/envs/tiku/bin/python",
     "python.linting.flake8Enabled": false,
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true

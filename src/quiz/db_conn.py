@@ -89,3 +89,7 @@ class Database:
             return res[0]
         else:
             return None
+
+    def delete_question_by_id(self, qid: int):
+        Question = Query()
+        self.question_db.remove(Question.id == qid)
