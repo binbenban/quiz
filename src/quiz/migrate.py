@@ -15,5 +15,3 @@ for q in db.all():
     Question = Query()
     db.remove(Question.id == q["id"])
     db.insert(q)
-
-

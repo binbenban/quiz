@@ -27,7 +27,7 @@ class Database:
         if last_wrong:
             questions_temp = []
             ids = [x["id"] for x in questions]
-            all_results = [x for x in self.result_db.search(Query().id.any(ids))]
+            all_results = self.result_db.search(Query().id.one_of(ids))
             for q in questions:
                 # search the last result in all_results
                 last_timestamp = "00000000 00:00:00"

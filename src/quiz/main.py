@@ -57,6 +57,8 @@ def quiz_generate():
         last_wrong = request.form.get("last_wrong") is not None
         
         questions = qh.generate(tags, int(size), times_wrong, last_wrong)
+        for q in questions:
+            app.logger.info(q['choices'])
         return flask.render_template(
             "quiz.html",
             title="Quiz",
