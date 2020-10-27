@@ -39,6 +39,8 @@
     $('document').ready(convert_base64);
 
     function on_submit_quiz() {
+        document.getElementById("submit").disabled = true;
+
         $.ajax({
             type: 'POST',
             url: "/quiz/submit",
