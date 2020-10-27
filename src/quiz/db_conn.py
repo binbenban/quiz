@@ -100,3 +100,6 @@ class Database:
     def delete_question_by_id(self, qid: int):
         Question = Query()
         self.question_db.remove(Question.id == qid)
+
+    def delete_result_by_id(self, qid: int):
+        self.result_db.remove(Query().id == qid)

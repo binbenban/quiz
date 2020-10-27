@@ -123,6 +123,7 @@ def question_delete():
     try:
         qid = int(qid)
         db.delete_question_by_id(qid)
+        db.delete_result_by_id(qid)
         print(f"deleted {qid} fine")
     except Exception as e:
         print(e)
