@@ -2,6 +2,7 @@ from tinydb import TinyDB, Query
 import os
 import random
 import base64
+import re
 from collections import Counter
 
 
@@ -69,11 +70,17 @@ class Database:
         Question = Query()
         res = self.question_db.search(Question.tags.any(tags))
         if question_keyword:
-            res = [
-                x for x in res 
-                if question_keyword.lower() in \
-                    str(base64.b64decode(x["question_body"].encode()).lower())
-            ]
+            keyword_match = []
+            for x in res:
+                # get question_body
+                decoded = str(base64.b64decode(x["question_body"].encode()).lower())
+                for rep in ["<div>", "</div>", "<br>", "&nbsp;"]:
+                    decoded = decoded.replace(rep, "")
+                # remove <img xxx> non-greedy search
+                no_img = re.sub(r"<img.*?>", '', decoded)
+                if question_keyword.lower() in no_img:
+                    keyword_match.append(x)
+            res = keyword_match
         return res
 
     def update_questions(self, questions: list):
