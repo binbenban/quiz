@@ -128,6 +128,22 @@ textarea {
 .rich_div {
   -moz-appearance: textfield-multiline;
   -webkit-appearance: textarea;
+  border: 0px solid gray;
+  font: large -moz-fixed;
+  /* font: -webkit-large-control; */
+  font-size: 20px;
+  height: 138px;
+  overflow: auto;
+  padding: 20px;
+  resize: both;
+  width: fit-content;
+  height:fit-content;
+  resize: none;
+}
+
+.rich_div_edit {
+  -moz-appearance: textfield-multiline;
+  -webkit-appearance: textarea;
   border: 1px solid gray;
   font: large -moz-fixed;
   /* font: -webkit-large-control; */
@@ -136,6 +152,6 @@ textarea {
   overflow: auto;
   padding: 20px;
   resize: both;
-  width: 70%;
-  height:fit-content; 
+  width: 80%;
+  height: fit-content;
 }

@@ -13,7 +13,7 @@
 
     <p>
         <label>Question</label>
-        <div class="rich_div convert" id="question_body_input" name="question_body_input" height="238px" contenteditable="">
+        <div class="rich_div_edit convert" id="question_body_input" name="question_body_input" height="238px" contenteditable="">
             {{question["question_body"]}}
         </div>
         <input type="hidden" id="question_body" name="question_body">
@@ -23,7 +23,7 @@
         <label for="choice_A_body_input">A</label>
         <input class="w3-check" type="checkbox" name="answer" value="A" {% if question['choices'][0].get("is_answer") %}checked{% endif %}>
     </p>
-    <div class="rich_div convert" id="choice_A_body_input" name="choice_A_body_input" contenteditable="">
+    <div class="rich_div_edit convert" id="choice_A_body_input" name="choice_A_body_input" contenteditable="">
         {{question['choices'][0]['choice_body']}}
     </div>
     <input type="hidden" id="choice_A_body" name="choice_A_body">
@@ -32,7 +32,7 @@
         <label for="choice_B_body_input">B</label>        
         <input class="w3-check" type="checkbox" name="answer" value="B" {% if question['choices'][1].get("is_answer") %}checked{% endif %}>
     </p>
-    <div class="rich_div convert" id="choice_B_body_input" name="choice_B_body_input" contenteditable="">
+    <div class="rich_div_edit convert" id="choice_B_body_input" name="choice_B_body_input" contenteditable="">
         {{question['choices'][1]['choice_body']}}
     </div>
     <input type="hidden" id="choice_B_body" name="choice_B_body">
@@ -41,7 +41,7 @@
         <label for="choice_C_body_input">C</label>        
         <input class="w3-check" type="checkbox" name="answer" value="C" {% if question['choices'][2].get("is_answer") %}checked{% endif %}>
     </p>
-    <div class="rich_div convert" id="choice_C_body_input" name="choice_C_body_input" contenteditable="">
+    <div class="rich_div_edit convert" id="choice_C_body_input" name="choice_C_body_input" contenteditable="">
         {{question['choices'][2]['choice_body']}}
     </div>
     <input type="hidden" id="choice_C_body" name="choice_C_body">
@@ -50,7 +50,7 @@
         <label for="choice_D_body_input">D</label>
         <input class="w3-check" type="checkbox" name="answer" value="D" {% if question['choices'][3].get("is_answer") %}checked{% endif %}>
     </p>
-    <div class="rich_div convert" id="choice_D_body_input" name="choice_D_body_input" contenteditable="">
+    <div class="rich_div_edit convert" id="choice_D_body_input" name="choice_D_body_input" contenteditable="">
         {{question['choices'][3]['choice_body']}}
     </div>
     <input type="hidden" id="choice_D_body" name="choice_D_body">
