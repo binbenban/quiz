@@ -1,5 +1,5 @@
 body { 
-	max-width: 1080px; 
+	max-width: 1080px;
 	margin: 0 auto !important; 
 	float: none !important; 
 }
@@ -136,6 +136,6 @@ textarea {
   overflow: auto;
   padding: 20px;
   resize: both;
-  width: 50%;
+  width: 70%;
   height:fit-content; 
 }
