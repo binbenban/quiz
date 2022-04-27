@@ -17,5 +17,5 @@
 
 [] add an option 'and'/'or' for connecting tags in quiz generate
 
-[] report
+[] reports
 
